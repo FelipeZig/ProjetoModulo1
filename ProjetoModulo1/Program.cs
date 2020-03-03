@@ -6,13 +6,15 @@ namespace ProjetoModulo1
 {
     class Program
     {
-
         static List<Candidato> ListaCandidato = new List<Candidato>();
         static List<int> ListaVotos = new List<int>();
+        static int cand1 = 0;
+        static int cand2 = 0;
+        static int nulo = 0;
+        static int branco = 0;
 
         static void Main(string[] args)
         {
-            
             bool menusair = true;
             do
             {
@@ -25,48 +27,16 @@ namespace ProjetoModulo1
                 Console.WriteLine(menup);
 
                 int opm = int.Parse(Console.ReadLine());
+                
                 if (opm == 3)
                     menusair = false;
                 else if (opm == 1)
-                {                    
-                    StringBuilder menuv = new StringBuilder();
-                    menuv.Append("\n### Escolha uma opcao:   ###");
-                    menuv.Append($"\n1 - Candidato {ListaCandidato[0].Nome}");
-                    menuv.Append($"\n2 - Candidato {ListaCandidato[1].Nome}");
-                    menuv.Append($"\n3 - {ListaCandidato[2].Nome}");
-                    menuv.Append($"\n4 - {ListaCandidato[3].Nome}");
-                        
-                    Console.WriteLine(menuv);
-
-                    int opv = int.Parse(Console.ReadLine());                        
-                    if (opv == 1)
-                    {
-                        Console.WriteLine("Voto computado com sucesso!");
-                        ListaVotos.Add(1);
-                    }
-                    else if (opv == 2)
-                    {
-                        Console.WriteLine("Voto computado com sucesso!");
-                    }
-                    else if (opv == 3)
-                    {
-                        Console.WriteLine("Voto computado com sucesso!");
-                    }
-                    else if (opv == 4)
-                    {
-                        Console.WriteLine("Voto computado com sucesso!");
-                    }
-                    else
-                    Console.WriteLine("Opcao invalida, tente novamente.");         
-                    
+                {
+                    Votar();                    
                 }
                 else if (opm == 2)
                 {
-                    //total de votos: x
-                    //porcentagem de nulos: %
-                    //porcentagem de brancos: %
-                    //votos por candidato: Candidato 1: X / Candidato 2: X
-                    //candidato vencedor: Candidato x.
+                    Contagem();
                 }
                 else
                     Console.WriteLine("Opcao invalida, tente novamente.");
@@ -74,7 +44,7 @@ namespace ProjetoModulo1
             while (menusair);
         }
 
-        static void CriarCandidatoS()
+        static void CriarCandidatos()
         {
             Candidato candidato1 = new Candidato("Abobrinha", 1, TipoCandidato.Valido);
             Candidato candidato2 = new Candidato("Berinjela", 2, TipoCandidato.Valido);
@@ -89,19 +59,66 @@ namespace ProjetoModulo1
 
         static void Votar()
         {
+            StringBuilder menuv = new StringBuilder();
+            menuv.Append("\n### Escolha uma opcao:   ###");
+            menuv.Append($"\n1 - Candidato Abobrinha");
+            menuv.Append($"\n2 - Candidato Berinjela");
+            menuv.Append($"\n3 - Nulo");
+            menuv.Append($"\n4 - Branco");
 
+            Console.WriteLine(menuv);
+
+            int opv = int.Parse(Console.ReadLine());
+            if (opv == 1)
+            {
+                Console.WriteLine("Voto computado com sucesso!");
+                ListaVotos.Add(opv);
+                cand1++;
+            }
+            else if (opv == 2)
+            {
+                Console.WriteLine("Voto computado com sucesso!");
+                ListaVotos.Add(opv);
+                cand2++;
+            }
+            else if (opv == 3)
+            {
+                Console.WriteLine("Voto computado com sucesso!");
+                ListaVotos.Add(opv);
+                nulo++;
+            }
+            else if (opv == 4)
+            {
+                Console.WriteLine("Voto computado com sucesso!");
+                ListaVotos.Add(opv);
+                branco++;
+            }
+            else
+                Console.WriteLine("Opcao invalida, tente novamente.");
         }
 
         static void Contagem()
         {
-
-        }
-
-        
-
+            Console.WriteLine("### Contagem de Votos: ###");
+            Console.WriteLine($"\nTotal de votos computados: {ListaVotos.Count}");
+            Console.WriteLine($"Porcentagem de votos nulos: {(nulo / ListaVotos.Count) * 100}%");
+            Console.WriteLine($"Porcentagem de votos brancos: {(branco / ListaVotos.Count) * 100}%");
+            Console.WriteLine($"Votos por candidato: Candidato Abobrinha: {cand1} / Candidato Berinjela: {cand2}");
+            if (cand1 > cand2)
+            {
+                Console.WriteLine($"Candidato vencedor: Abobrinha {cand1}");
+            }
+            else if (cand2 > cand1)
+            {
+                Console.WriteLine($"Candidato vencedor: Berinjela {cand2}");
+            }
+            else
+                Console.WriteLine($"Os candidatos estao empatados em votos.");
+        }       
     }
     
     
+
     public enum TipoCandidato
     {
         Valido = 0,
