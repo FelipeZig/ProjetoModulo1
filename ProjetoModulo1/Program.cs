@@ -7,14 +7,10 @@ namespace ProjetoModulo1
     class Program
     {
         static List<Candidato> ListaCandidato = new List<Candidato>();
-        static List<int> ListaVotos = new List<int>();
-        static int cand1 = 0;
-        static int cand2 = 0;
-        static int nulo = 0;
-        static int branco = 0;
+        static Dictionary<int, double> ListaVotos = new Dictionary<int, double>();       
 
         static void Main(string[] args)
-        {
+        {            
             bool menusair = true;
             do
             {
@@ -32,7 +28,7 @@ namespace ProjetoModulo1
                     menusair = false;
                 else if (opm == 1)
                 {
-                    Votar();                    
+                    Votar();                     
                 }
                 else if (opm == 2)
                 {
@@ -69,56 +65,69 @@ namespace ProjetoModulo1
             Console.WriteLine(menuv);
 
             int opv = int.Parse(Console.ReadLine());
-            if (opv == 1)
+
+            if (opv == 0 | opv > 4)
             {
-                Console.WriteLine("Voto computado com sucesso!");
-                ListaVotos.Add(opv);
-                cand1++;
-            }
-            else if (opv == 2)
-            {
-                Console.WriteLine("Voto computado com sucesso!");
-                ListaVotos.Add(opv);
-                cand2++;
-            }
-            else if (opv == 3)
-            {
-                Console.WriteLine("Voto computado com sucesso!");
-                ListaVotos.Add(opv);
-                nulo++;
-            }
-            else if (opv == 4)
-            {
-                Console.WriteLine("Voto computado com sucesso!");
-                ListaVotos.Add(opv);
-                branco++;
-            }
-            else
                 Console.WriteLine("Opcao invalida, tente novamente.");
-        }
+            }
+            else if (opv < 5 && opv > 0)
+            {
+                double votos = 1;
+                Console.WriteLine("Voto computado com sucesso!");
+                if (!ListaVotos.ContainsKey(opv))
+                {
+                    ListaVotos.Add(opv, 1);
+                }
+                else
+                {
+                    ListaVotos.TryGetValue(opv, out votos);
+                    ListaVotos.Remove(opv);
+                    ListaVotos.Add(opv, votos + 1);
+                }
+            }
+        }    
 
         static void Contagem()
         {
+            
+            double total = 0;
+            foreach (KeyValuePair<int, double> entry in ListaVotos)
+            {
+                total += entry.Value;
+            }
             Console.WriteLine("### Contagem de Votos: ###");
-            Console.WriteLine($"\nTotal de votos computados: {ListaVotos.Count}");
-            Console.WriteLine($"Porcentagem de votos nulos: {(nulo / ListaVotos.Count) * 100}%");
-            Console.WriteLine($"Porcentagem de votos brancos: {(branco / ListaVotos.Count) * 100}%");
-            Console.WriteLine($"Votos por candidato: Candidato Abobrinha: {cand1} / Candidato Berinjela: {cand2}");
-            if (cand1 > cand2)
+            Console.WriteLine($"Total de votos computados: {total}");
+
+            //neste lugar usarei o try/catch
+
+            double nulo;
+            if (ListaVotos.TryGetValue(3, out nulo))
             {
-                Console.WriteLine($"Candidato vencedor: Abobrinha {cand1}");
+                Console.WriteLine("Total de votos nulos: " + nulo + "(" + ((nulo/total) * 100).ToString("F2") + "%)");
             }
-            else if (cand2 > cand1)
+            double branco;
+            if (ListaVotos.TryGetValue(4, out branco))
             {
-                Console.WriteLine($"Candidato vencedor: Berinjela {cand2}");
+                Console.WriteLine($"Total de votos nulos: {branco} ({(branco / total) * 100}%)");
             }
-            else
-                Console.WriteLine($"Os candidatos estao empatados em votos.");
-        }       
+
+
+            //Console.WriteLine($"Porcentagem de votos nulos: {(nulo / ListaVotos.Count) * 100}%");
+            //Console.WriteLine($"Porcentagem de votos brancos: {(branco / ListaVotos.Count) * 100}%");
+            //Console.WriteLine($"Votos por candidato: Candidato Abobrinha: {cand1} / Candidato Berinjela: {cand2}");
+            //if (cand1 > cand2)
+            //{
+            //    Console.WriteLine($"Candidato vencedor: Abobrinha {cand1}");
+            //}
+            //else if (cand2 > cand1)
+            //{
+            //    Console.WriteLine($"Candidato vencedor: Berinjela {cand2}");
+            //}
+            //else
+            //    Console.WriteLine($"Os candidatos estao empatados em votos.");
+        }
     }
     
-    
-
     public enum TipoCandidato
     {
         Valido = 0,
