@@ -44,10 +44,10 @@ namespace ProjetoModulo1
 
         public static void CriarCandidatos()
         {
-            Candidato candidato1 = new Candidato("Abobrinha", 1, TipoCandidato.Valido);
-            Candidato candidato2 = new Candidato("Berinjela", 2, TipoCandidato.Valido);
-            Candidato candidato3 = new Candidato("Nulo", 3, TipoCandidato.Nulo);
-            Candidato candidato4 = new Candidato("Branco", 4, TipoCandidato.Branco);
+            Candidato candidato1 = new Candidato("Abobrinha", 10, TipoCandidato.Valido);
+            Candidato candidato2 = new Candidato("Berinjela", 20, TipoCandidato.Valido);
+            Candidato candidato3 = new Candidato("Nulo", 30, TipoCandidato.Nulo);
+            Candidato candidato4 = new Candidato("Branco", 40, TipoCandidato.Branco);
 
             ListaCandidato.Add(candidato1);
             ListaCandidato.Add(candidato2);
@@ -92,21 +92,24 @@ namespace ProjetoModulo1
         public static void Votar()
         {
             StringBuilder menuv = new StringBuilder();
-            menuv.Append("\n### Escolha uma opcao:   ###");            
-            menuv.Append($"\n1) - Candidato {Program.ListaCandidato[0].Nome}");
-            menuv.Append($"\n2) - Candidato {Program.ListaCandidato[1].Nome}");
-            menuv.Append($"\n3) - {Program.ListaCandidato[2].Nome}");
-            menuv.Append($"\n4) - {Program.ListaCandidato[3].Nome}");
+            menuv.Append("\n### Digite o numero do candidato:   ###");            
+            menuv.Append($"\n - Candidato: {Program.ListaCandidato[0].Nome} ({Program.ListaCandidato[0].Numero})");
+            menuv.Append($"\n - Candidato: {Program.ListaCandidato[1].Nome} ({Program.ListaCandidato[1].Numero})");
+            menuv.Append($"\n - Voto {Program.ListaCandidato[2].Nome} ({Program.ListaCandidato[2].Numero})");
+            menuv.Append($"\n - Voto {Program.ListaCandidato[3].Nome} ({Program.ListaCandidato[3].Numero})");
 
             Console.WriteLine(menuv);
 
             int opv = int.Parse(Console.ReadLine());
 
-            if (opv == 0 | opv > 4)
+            if (opv != Program.ListaCandidato[0].Numero && 
+                opv != Program.ListaCandidato[1].Numero && 
+                opv != Program.ListaCandidato[2].Numero && 
+                opv != Program.ListaCandidato[3].Numero)
             {
                 Console.WriteLine("Opcao invalida, tente novamente.");
             }
-            else if (opv < 5 && opv > 0)
+            else
             {
                 double votos = 1;
                 Console.WriteLine("Voto computado com sucesso!");
@@ -132,55 +135,35 @@ namespace ProjetoModulo1
             }
             Console.WriteLine("### Contagem de Votos: ###");
             Console.WriteLine($"Total de votos computados: {total} (100%)");
-
-            //neste lugar usarei o try/catch
-
+            
             double nulo;
             if (Program.ListaVotos.TryGetValue(3, out nulo))
-            {
                 Console.WriteLine($"Total de votos nulos: {nulo} ({((nulo / total) * 100).ToString("F2")}%)");
-            }
             else
-            {
-                Console.WriteLine("Total de votos nulos: 0 (0.00%)");
-            }
+                Console.WriteLine("Total de votos nulos: 0 (0.00%)");            
 
             double branco;
             if (Program.ListaVotos.TryGetValue(4, out branco))
-            {
-                Console.WriteLine($"Total de votos brancos: {branco} ({((branco / total) * 100).ToString("F2")}%)");
-            }
+                Console.WriteLine($"Total de votos brancos: {branco} ({((branco / total) * 100).ToString("F2")}%)");            
             else
-            {
                 Console.WriteLine("Total de votos brancos: 0 (0.00%)");
-            }
+            
             double cand1 = 0;
             double cand2 = 0;
-            if (Program.ListaVotos.TryGetValue(1, out cand1) && Program.ListaVotos.TryGetValue(2, out cand2))
-            {
+            if (Program.ListaVotos.TryGetValue(Program.ListaCandidato[0].Numero, out cand1) && Program.ListaVotos.TryGetValue(Program.ListaCandidato[1].Numero, out cand2))
                 Console.WriteLine($"Total de votos por candidato: {Program.ListaCandidato[0].Nome}: {cand1} ({((cand1 / total) * 100).ToString("F2")}%) / {Program.ListaCandidato[1].Nome}: {cand2}({((cand2 / total) * 100).ToString("F2")}%)");
-            }
-            else if (Program.ListaVotos.TryGetValue(1, out cand1) && !Program.ListaVotos.TryGetValue(2, out cand2))
-            {
+            else if (Program.ListaVotos.TryGetValue(Program.ListaCandidato[0].Numero, out cand1) && !Program.ListaVotos.TryGetValue(Program.ListaCandidato[1].Numero, out cand2))
                 Console.WriteLine($"Total de votos por candidato: {Program.ListaCandidato[0].Nome}: {cand1} ({((cand1 / total) * 100).ToString("F2")}%) / {Program.ListaCandidato[1].Nome}: 0 (0.00%)");
-            }
-            else if (!Program.ListaVotos.TryGetValue(1, out cand1) && Program.ListaVotos.TryGetValue(2, out cand2))
-            {
+            else if (!Program.ListaVotos.TryGetValue(Program.ListaCandidato[0].Numero, out cand1) && Program.ListaVotos.TryGetValue(Program.ListaCandidato[1].Numero, out cand2))
                 Console.WriteLine($"Total de votos por candidato: {Program.ListaCandidato[0].Nome}: 0 (0.00%) / {Program.ListaCandidato[1].Nome}: {cand1} ({((cand1 / total) * 100).ToString("F2")}%)");
-            }
             else
-            {
                 Console.WriteLine($"Total de votos do candidato {Program.ListaCandidato[0].Nome}: 0 (0.00%) / {Program.ListaCandidato[1].Nome}: 0 (0.00%)");
-            }
+            
 
-            if (cand1 > cand2)
-            {
+            if (cand1 > cand2)            
                 Console.WriteLine($"Candidato vencedor: {Program.ListaCandidato[0].Nome} {cand1}");
-            }
             else if (cand2 > cand1)
-            {
                 Console.WriteLine($"Candidato vencedor: {Program.ListaCandidato[1].Nome} {cand2}");
-            }
             else
                 Console.WriteLine($"Os candidatos estao empatados em votos.");
         }
