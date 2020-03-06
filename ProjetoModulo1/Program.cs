@@ -129,12 +129,23 @@ namespace ProjetoModulo1
         public static void Contagem()
         {
             double total = 0;
-            foreach (KeyValuePair<int, double> entry in Program.ListaVotos)
+            try
             {
-                total += entry.Value;
+                foreach (KeyValuePair<int, double> entry in Program.ListaVotos)
+                {
+                    total += entry.Value;
+                }
+                Console.WriteLine("### Contagem de Votos: ###");
+                Console.WriteLine($"Total de votos computados: {total} (100%)");
             }
-            Console.WriteLine("### Contagem de Votos: ###");
-            Console.WriteLine($"Total de votos computados: {total} (100%)");
+            catch (Exception)
+            {
+                Console.WriteLine("Erro ao depurar os votos!");
+                Console.WriteLine("### Contagem de Votos: ###");
+                Console.WriteLine($"Total de votos computados: 0 (100%)");
+                throw;
+            }
+            
             
             double nulo;
             if (Program.ListaVotos.TryGetValue(3, out nulo))
