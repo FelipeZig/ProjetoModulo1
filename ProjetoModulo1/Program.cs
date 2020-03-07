@@ -148,13 +148,13 @@ namespace ProjetoModulo1
             
             
             double nulo;
-            if (Program.ListaVotos.TryGetValue(3, out nulo))
+            if (Program.ListaVotos.TryGetValue(30, out nulo))
                 Console.WriteLine($"Total de votos nulos: {nulo} ({((nulo / total) * 100).ToString("F2")}%)");
             else
                 Console.WriteLine("Total de votos nulos: 0 (0.00%)");            
 
             double branco;
-            if (Program.ListaVotos.TryGetValue(4, out branco))
+            if (Program.ListaVotos.TryGetValue(40, out branco))
                 Console.WriteLine($"Total de votos brancos: {branco} ({((branco / total) * 100).ToString("F2")}%)");            
             else
                 Console.WriteLine("Total de votos brancos: 0 (0.00%)");
